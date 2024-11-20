@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase ,ref,push,onValue} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import { getDatabase ,ref,push,onValue,remove} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
 
 
 
@@ -19,16 +19,19 @@ const shopList = document.getElementById('shopping-list');
 
 
 onValue(shoppingInDB,function(snapshot){
+
+    if(snapshot.exists()){
+        clearShopList();
+        let ItemsArray = Object.entries(snapshot.val());
+        ItemsArray.forEach(item =>{
+        addInputToList(item) });
+
+    }else{
+        shopList.innerHTML="No Items Yes ..."
+    }
    
-    shopList.innerHTML = ""
-    let ItemsArray = Object.values(snapshot.val());
-    ItemsArray.forEach(item =>addInputToList(item) );
+   
 })
-
-
-
-
-
 
 
 button.addEventListener('click',()=> {
@@ -43,8 +46,21 @@ function clearInput(){
     input.value ="";
 
 }
-function addInputToList(input){
-    shopList.innerHTML +=`<li>${input}</li>`
+function clearShopList(){
+    shopList.innerHTML = "";
+}
+function addInputToList(item){
+    //shopList.innerHTML +=`<li>${input}</li>`
+        let currentItemId = item[0];
+        let currentItem =item[1];
+    const newEl = document.createElement('li');
+    newEl.textContent=currentItem;
+    newEl.addEventListener("click",()=>{
+        let exactlocation = ref(database,`Shopping list/${currentItemId}`);
+        remove(exactlocation)
+    } )
+    shopList.append(newEl);
+
 
 }
 
