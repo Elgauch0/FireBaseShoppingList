@@ -36,7 +36,6 @@ onValue(shoppingInDB,function(snapshot){
 
 button.addEventListener('click',()=> {
     let inputValue = input.value ;
-    addInputToList(inputValue);
     push(shoppingInDB,inputValue);
     clearInput();
    
