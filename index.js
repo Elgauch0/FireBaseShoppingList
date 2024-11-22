@@ -36,8 +36,12 @@ onValue(shoppingInDB,function(snapshot){
 
 button.addEventListener('click',()=> {
     let inputValue = input.value ;
+    if(inputValue !==''){
     push(shoppingInDB,inputValue);
     clearInput();
+
+    }
+    
    
 });
 
